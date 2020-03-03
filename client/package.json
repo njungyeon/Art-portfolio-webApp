@@ -7,13 +7,17 @@
     "@testing-library/react": "^9.4.1",
     "@testing-library/user-event": "^7.2.1",
     "antd": "^4.0.0",
+    "axios": "^0.19.2",
     "axois": "0.0.1-security",
     "formik": "^2.1.4",
-    "http-proxy-middleware": "^1.0.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
+    "redux": "^4.0.5",
+    "redux-promise": "^0.6.0",
+    "redux-thunk": "^2.3.0",
     "yup": "^0.28.1"
   },
   "scripts": {
@@ -36,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^0.19.1"
   }
 }

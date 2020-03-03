@@ -1,38 +1,62 @@
 import React, { useState } from 'react'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { loginUser } from '../../../_actions/user_actions'
+import { useDispatch } from 'react-redux'
 import { Form, Input, Button, Checkbox, Typography } from 'antd';
-
 const { Title } = Typography;
 
-function LoginPage() {
-
+function LoginPage(props) {
+    const dispatch = useDispatch();
     const initialId = localStorage.getItem("rememberMe") ? localStorage.getItem("rememberMe") : '';
     const rememberMeChecked = localStorage.getItem("rememberMe") ? true : false;
     const [rememberMe, setRememberMe] = useState(rememberMeChecked)
+    const [formErrorMsg, setformErrorMsg] = useState('')
 
     const handleRememberMe = () => {
         setRememberMe(!rememberMe)
-      };
+    };
     return (
         <div>
             <Formik
-                initialValues={{ userId: '', password: '' }}
+                initialValues={{ userId: initialId, password: '' }}
                 validationSchema={Yup.object().shape({
                     userId: Yup.string()
                       .required('아이디를 입력하세요.'),
                     password: Yup.string()
-                      .min(6, '비밀번호를 확인해주세요.')
+                      .min(5, '비밀번호를 확인해주세요.')
                       .required('비밀번호를 입력하세요.'),
                   })}
-                onSubmit={(values, { setSubmitting }) => {  //여기서 values에 userID와 password가 담겨오나봄
+                onSubmit={(values, { setSubmitting }) => {
                     setTimeout(() => {
                     alert(JSON.stringify(values, null, 2));
                     let dataToSubmit = {
-                        email: values.email,
+                        userId: values.userId,
                         password: values.password
                     };
-
+                    dispatch(loginUser(dataToSubmit))
+                        .then(response => {
+                            if(response.payload.loginSuccess){
+                                window.localStorage.setItem('userId', response.payload.userId);
+                                if(rememberMe === true){
+                                    window.localStorage.setItem('rememberMe', response.payload.userId);
+                                } else {
+                                    window.localStorage.removeItem('rememberMe');
+                                }
+                                props.history.push("/");
+                            }else {
+                                setformErrorMsg('아이디나 비밀번호를 확인하세요.')
+                                setTimeout(() => {
+                                    setformErrorMsg("")
+                                }, 3000);
+                            }
+                        })
+                        .catch(err => {
+                            setformErrorMsg('아이디나 비밀번호를 확인하세요.')
+                            setTimeout(() => {
+                                setformErrorMsg("")
+                            }, 3000);
+                        });
                     setSubmitting(false);
                     }, 500);
                 }}
@@ -81,6 +105,10 @@ function LoginPage() {
                                 <div className="input-feedback">{errors.password}</div>
                             )}
                         </Form.Item>
+                        
+                        {formErrorMsg && (
+                            <label><p>{formErrorMsg}</p></label>
+                        )}
 
                         <Form.Item>
                             <Checkbox id="rememberMe" onChange={handleRememberMe} checked={rememberMe}>아이디 저장</Checkbox>
@@ -92,28 +120,6 @@ function LoginPage() {
                         </Form.Item>
                     </form>
                     </div>
-
-                    // <form onSubmit={handleSubmit}>
-                    // <input
-                    //     type="userId"
-                    //     name="userId"
-                    //     onChange={handleChange}
-                    //     onBlur={handleBlur}
-                    //     value={values.userId}
-                    // />
-                    // {errors.userId && touched.userId && errors.userId}
-                    // <input
-                    //     type="password"
-                    //     name="password"
-                    //     onChange={handleChange}
-                    //     onBlur={handleBlur}
-                    //     value={values.password}
-                    // />
-                    // {errors.password && touched.password && errors.password}
-                    // <button type="submit" disabled={isSubmitting}>
-                    //     Submit
-                    // </button>
-                    // </form>
                 )}
                 </Formik>
         </div>

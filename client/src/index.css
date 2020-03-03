@@ -20,3 +20,14 @@ code {
   align-items: center;
   height: 100vh;
 }
+
+input.error {
+  border-color: red;
+}
+
+
+.input-feedback {
+  color: red;
+  height: 5px;
+  /* margin-top: -12px; */
+}

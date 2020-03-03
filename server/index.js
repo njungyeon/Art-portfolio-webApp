@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 5000
 const bodyParser = require("body-parser"); 
 const cookieParser = require("cookie-parser");
 const { User } = require("./models/User");
@@ -32,7 +32,7 @@ app.post('/api/user/register', (req, res) => {
 })
 
 app.post('/api/user/login', (req, res) => {
-    
+
     User.findOne({ userId : req.body.userId }, (err, userInfo) => {
         if(!userInfo) return res.json({
             loginSuccess: false,
@@ -61,7 +61,8 @@ app.get('/api/user/auth', auth, (req, res) => {
         registerDate: req.user.registerDate,
         classLevel: req.user.classLevel,
         image: req.user.image,
-        role: req.user.role
+        role: req.user.role,
+        isAuth: true
     })
 })
 

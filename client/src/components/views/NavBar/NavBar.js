@@ -36,10 +36,7 @@ function NavBar() {
                     className="menu_mobile_btn"
                     type="primary"
                     onClick={showDrawer}
-                    // style={{ marginTop: '30px' }}
                 >
-                    {/* <Icon type="align-right" /> */}
-                    {/* antd icon이 안먹어서 material icon으로 대체 */}
                     <i class="material-icons"> menu </i>
                 </Button>
                 <Drawer
