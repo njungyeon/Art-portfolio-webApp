@@ -11,10 +11,10 @@ export default function (BeforeClass, reload, adminRoute = null){
             dispatch(auth()).then(async response => {
                 if(await !response.payload.isAuth){
                     if(reload) {
-                        props.history.push('/register_login') // 이건 무슨 뜻일까?
+                        props.history.push('/register_login')
                     }
                 } else {
-                    if(adminRoute && !response.payload.isAdmin) {
+                    if(adminRoute && !response.payload.isAdmin) { //만약 관리자를 위한 라우트이고 관리자가 아니라면
                         props.history.push('/')
                     }
                     else {

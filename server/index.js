@@ -23,7 +23,7 @@ app.use(cookieParser());
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
-app.post('/api/user/register', (req, res) => { 
+app.post('/api/user/register', (req, res) => {
     const user = new User(req.body)
     user.save((err, userInfo)=> {
        if(err) return res.json({ success: false, err })

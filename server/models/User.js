@@ -31,7 +31,7 @@ const userSchema = mongoose.Schema({
     },
     role: {
         type: Number,
-        default: 0
+        default: 2 //0: 관리자 , 1: 원장 및 선생님들, 2: 학생과 학부모님
     },
     token: {
         type: String 

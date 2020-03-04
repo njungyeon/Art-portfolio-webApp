@@ -1,7 +1,8 @@
 import {
     LOGIN_USER,
     LOGOUT_USER,
-    AUTH_USER
+    AUTH_USER,
+    REGISTER_USER,
 } from './actionTypes';
 import axios from 'axios'
 import { USER_SERVER } from '../components/Config';
@@ -21,6 +22,15 @@ export function auth(){
 
     return {
         type: AUTH_USER,
+        payload: request
+    }
+}
+
+export function registerUser(dataToSubmit){
+    const request = axios.post(`${REGISTER_USER}/register`, dataToSubmit)
+      .then(response => response.data);
+    return {
+        type: REGISTER_USER,
         payload: request
     }
 }

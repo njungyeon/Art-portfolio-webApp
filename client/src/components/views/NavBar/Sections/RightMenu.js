@@ -19,7 +19,7 @@ function RightMenu(props) {
             });
     }
 
-    if(user.userData && !user.userData.isAuth) { //이게 지금 제대로 실행되려면 auth.js를 제대로 구현해야한다.
+    if(user.userData && !user.userData.isAuth) { //속도가 상당히 느리다 리팩토링 대상
         return (
             <Menu mode={props.mode}>
                 <Menu.Item key="register">
@@ -35,10 +35,10 @@ function RightMenu(props) {
         return (
             <Menu mode={props.mode}>
                 <Menu.Item key="registerStu">
-                    <a href="/registerStu">등록하기</a>
+                    <a href="/registerStu">학생 등록</a>
                 </Menu.Item>
                 <Menu.Item key="login">
-                    <a onClick={logoutHandler}>로그아웃</a>
+                    <a onClick={logoutHandler} href >로그아웃</a>
                 </Menu.Item>
             </Menu>
         )

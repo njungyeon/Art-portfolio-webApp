@@ -1,58 +1,57 @@
 import React, { useState } from 'react'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import { loginUser } from '../../../_actions/user_actions'
+import { registerUser } from '../../../_actions/user_actions'
 import { useDispatch } from 'react-redux'
 import { Form, Input, Button, Checkbox, Typography } from 'antd';
 const { Title } = Typography;
 
-function LoginPage(props) {
+function RegisterStuPage(props) {
     const dispatch = useDispatch();
-    const initialId = localStorage.getItem("rememberMe") ? localStorage.getItem("rememberMe") : '';
-    const rememberMeChecked = localStorage.getItem("rememberMe") ? true : false;
-    const [rememberMe, setRememberMe] = useState(rememberMeChecked)
+
     const [formErrorMsg, setformErrorMsg] = useState('')
 
-    const handleRememberMe = () => {
-        setRememberMe(!rememberMe)
-    };
     return (
         <div>
             <Formik
-                initialValues={{ userId: initialId, password: '' }}
+                initialValues={{ userId: '', password: '' }}
                 validationSchema={Yup.object().shape({
-                    userId: Yup.string()
+                    studentId: Yup.string()
+                      .min(5, '최소한 5자 이상 입력해주세요')
                       .required('아이디를 입력하세요.'),
                     password: Yup.string()
-                      .min(5, '비밀번호를 확인해주세요.')
+                      .min(5, '최소한 5자 이상 입력해주세요')
                       .required('비밀번호를 입력하세요.'),
+                    name: Yup.string()
+                      .required('이름은 필수사항입니다.'),
+                    classLevel: Yup.string(),
+                    //   .required('학생의 수업 레벨을 입력해주세요'),
+                    image: Yup.string()
+                    //   .required('학생의 이미지를 추가해주세요'),
                   })}
                 onSubmit={(values, { setSubmitting }) => {
                     setTimeout(() => {
                     // alert(JSON.stringify(values, null, 2));
                     let dataToSubmit = {
-                        userId: values.userId,
-                        password: values.password
+                        userId: values.studentId,
+                        password: values.password,
+                        name: values.name,
+                        classLevel: values.classLevel,
+                        image: values.image,
                     };
-                    dispatch(loginUser(dataToSubmit))
+                    dispatch(registerUser(dataToSubmit))
                         .then(response => {
                             if(response.payload.loginSuccess){
-                                window.localStorage.setItem('userId', response.payload.userId);
-                                if(rememberMe === true){
-                                    window.localStorage.setItem('rememberMe', response.payload.userId);
-                                } else {
-                                    window.localStorage.removeItem('rememberMe');
-                                }
                                 props.history.push("/");
                             }else {
-                                setformErrorMsg('아이디나 비밀번호를 확인하세요.')
+                                setformErrorMsg('필수 사항들을 입력했는지 확인하세요.')
                                 setTimeout(() => {
                                     setformErrorMsg("")
                                 }, 3000);
                             }
                         })
                         .catch(err => {
-                            setformErrorMsg('아이디나 비밀번호를 확인하세요.')
+                            setformErrorMsg('회원가입 오류.. [관리자에게 문의하세요]')
                             setTimeout(() => {
                                 setformErrorMsg("")
                             }, 3000);
@@ -72,7 +71,7 @@ function LoginPage(props) {
                     /* and other goodies */
                 }) => (
                     <div className="app">
-                    <Title level={2}>Login</Title>
+                    <Title level={2}>학생 등록</Title>
                     <form onSubmit={handleSubmit} style={{ width: '350px' }}>
                         <Form.Item required>
                             <Input
@@ -105,17 +104,62 @@ function LoginPage(props) {
                                 <div className="input-feedback">{errors.password}</div>
                             )}
                         </Form.Item>
+
+                        <Form.Item>
+                            <Input
+                                id="name"
+                                prefix={<i class="material-icons" style={{ color: 'rgba(0,0,0,.25)' }}> account_circle </i>}
+                                placeholder="이름"
+                                type="name"
+                                value={values.name}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                className={ errors.name && touched.name ? 'text-input error' : 'text-input' }
+                            />
+                            {errors.name && touched.name && (
+                                <div className="input-feedback">{errors.name}</div>
+                            )}
+                        </Form.Item>
+
+                        <Form.Item>
+                            <Input
+                                id="classLevel"
+                                prefix={<i class="material-icons" style={{ color: 'rgba(0,0,0,.25)' }}> account_circle </i>}
+                                placeholder="수업 레벨"
+                                type="classLevel"
+                                value={values.classLevel}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                classname={ errors.classLevel && touched.classLevel ? 'text-input error' : 'text-input' }
+                            />
+                            {errors.classLevel && touched.classLevel && (
+                                <div classname="input-feedback">{errors.classLevel}</div>
+                            )}
+                        </Form.Item>
+
+                        <Form.Item>
+                            <Input
+                                id="image"
+                                prefix={<i class="material-icons" style={{ color: 'rgba(0,0,0,.25)' }}> account_circle </i>}
+                                placeholder="학생 이미지"
+                                type="image"
+                                value={values.image}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                className={ errors.image && touched.image ? 'text-input error' : 'text-input' }
+                            />
+                            {errors.image && touched.image && (
+                                <div classname="input-feedback">{errors.image}</div>
+                            )}
+                        </Form.Item>
                         
                         {formErrorMsg && (
                             <label><p>{formErrorMsg}</p></label>
                         )}
 
                         <Form.Item>
-                            <Checkbox id="rememberMe" onChange={handleRememberMe} checked={rememberMe}>아이디 저장</Checkbox>
-                            <a className="login-form-forgot" href="/reset_user" style={{ float: 'right' }}>비밀번호 찾기</a>
-                            <br />
                             <Button type="primary" htmlType="submit" className="login-form-button" style={{ minWidth: '100%' }} disabled={isSubmitting} onSubmit={handleSubmit}>
-                                Log in
+                                학생 등록
                             </Button>
                         </Form.Item>
                     </form>
@@ -126,4 +170,4 @@ function LoginPage(props) {
     )
 }
 
-export default LoginPage
+export default RegisterStuPage
