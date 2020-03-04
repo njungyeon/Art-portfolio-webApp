@@ -46,3 +46,10 @@ input.error {
   flex-wrap: wrap;
 }
 
+.userImage {
+  opacity: 1;
+}
+
+.userImage:hover {
+  opacity: 0.8;
+}

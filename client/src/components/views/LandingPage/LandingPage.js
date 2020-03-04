@@ -1,13 +1,33 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Pagination, Card, Typography, Tag, Input } from 'antd';
 import { UserOutlined, EditOutlined, EllipsisOutlined, SettingOutlined  } from '@ant-design/icons';
 
 const { Title } = Typography;
 // const { Meta } = Card;
 
-function LandingPage() {
+function LandingPage(props) {
     const user = useSelector(state => state.user)
+    const dispatch = useDispatch();
+
+    const handleCard = (index) => {
+        console.log("학생정보수정", index)
+        //dispatch()
+        
+
+    }
+
+    const handleCardAction = (num) => {
+        console.log("실행?", num)
+        // dispatch()
+        if(num === 1){
+            // props.history.push('/AddNewPortfolio');
+        }else{
+            props.history.push('/modifyStuPage');
+        }
+        
+    }
+
     const stuArray = [
         { name: '유재석', teacher: 'jenny', image: '', classLevel: 'beginner' },
         { name: '강호동', teacher: 'rose', image: '', classLevel: 'beginner' },
@@ -23,24 +43,31 @@ function LandingPage() {
         { name: '김민석', teacher: 'lisa', image: '', classLevel: 'beginner' },
     ]
     const Cards = stuArray.map((element, index) => {
-        console.log(element)
         return (
             <Card
-                style={{ width: 250, marginBottom: 10}}// height:300, margin: 10
+                key={index}
+                style={{ width: 250, marginBottom: 10, textAlign: 'center'}}// height:300, margin: 10
                 title={`${element.name}`}
                 headStyle = {{fontWeight: "bold"}}
                 bodyStyle = {{fontWeight: "bold", padding: 10}}
-                hoverable                 
-                cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                hoverable
+                cover={<img 
+                    onClick={() => {handleCard(index)}} 
+                    alt="example" 
+                    src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+                    className="userImage"/>
+                }
                 actions={[
-                    <EditOutlined key="edit" />,
-                    <SettingOutlined key="setting" />,                    
+                    // <EditOutlined key="edit" onClick={handleCardAction}/>,
+                    // <SettingOutlined key="setting" onClick={handleCardAction}/>,
+                    <i key="addPicture" class="material-icons" onClick={() => {handleCardAction(1)}}>add_photo_alternate</i>,
+                    <i key="modify" class="material-icons" onClick={() => {handleCardAction(2)}}>edit</i>
                 ]}
                 
             >
                 {/* <Meta title="Europe Street beat" description="www.instagram.com" /> */}
-                <p style={{ textAlign: 'center' }}>담당 선생님: {`${element.teacher}`} </p>
-                <p style={{ textAlign: 'center' }}>소속 반: {`${element.classLevel}`} </p>
+                <p>담당 선생님: {`${element.teacher}`} </p>
+                <p>소속 반: {`${element.classLevel}`} </p>
             </Card>
         )
     })
@@ -61,7 +88,7 @@ function LandingPage() {
 
     const stuSearch = (
         <div className="example-input">
-            <Input size="large" placeholder="large size" prefix={<UserOutlined />} />
+            <Input size="large" placeholder="학생 이름 검색" prefix={<UserOutlined />} />
         </div>
     )
 
@@ -85,6 +112,7 @@ function LandingPage() {
                 <br />
 
                 <div className="portfolio-card">{Cards}</div>
+                
                 
             </div>
         )

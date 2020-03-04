@@ -22,7 +22,7 @@ function NavBar() {
         <nav className="menu" style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
             <div className="menu_logo">
                 {/* <a href="/"><img src={Logo} alt="Logo" style={{ width: '100%', marginTop: '-5px' }} /></a> */}
-                <a href="/"><i class="material-icons">sentiment_very_satisfied</i></a>
+                <a href="/"><i className="material-icons">sentiment_very_satisfied</i></a>
             </div>
 
             <div className="menu_container">
@@ -37,7 +37,7 @@ function NavBar() {
                     type="primary"
                     onClick={showDrawer}
                 >
-                    <i class="material-icons"> menu </i>
+                    <i className="material-icons"> menu </i>
                 </Button>
                 <Drawer
                     title="Basic Drawer"

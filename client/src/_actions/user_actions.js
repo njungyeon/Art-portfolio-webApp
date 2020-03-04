@@ -2,6 +2,7 @@ import {
     LOGIN_USER,
     LOGOUT_USER,
     AUTH_USER,
+    MODIFY_USER,
     REGISTER_USER,
 } from './actionTypes';
 import axios from 'axios'
@@ -31,6 +32,15 @@ export function registerUser(dataToSubmit){
       .then(response => response.data);
     return {
         type: REGISTER_USER,
+        payload: request
+    }
+}
+
+export function modifyUser(dataToSubmit){
+    const request = axios.post()
+        .then(response => response.data);
+    return {
+        type: MODIFY_USER,
         payload: request
     }
 }
