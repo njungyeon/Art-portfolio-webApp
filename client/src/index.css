@@ -31,3 +31,18 @@ input.error {
   height: 5px;
   /* margin-top: -12px; */
 }
+
+.portfolio-div {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px;
+}
+
+.portfolio-card {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
