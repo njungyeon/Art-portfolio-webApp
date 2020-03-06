@@ -38,7 +38,7 @@ function RightMenu(props) {
                     <a href="/registerStu">학생 등록</a>
                 </Menu.Item>
                 <Menu.Item key="login">
-                    <a onClick={logoutHandler} href="true" >로그아웃</a>
+                    <a onClick={logoutHandler} >로그아웃</a>
                 </Menu.Item>
             </Menu>
         )

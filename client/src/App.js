@@ -13,7 +13,10 @@ import Footer from './components/views/Footer/Footer';
 import NavBar from './components/views/NavBar/NavBar';
 import IntroducePage from './components/IntroducePage/IntroducePage';
 import RegisterStuPage from './components/views/RegisterStuPage/RegisterStuPage';
-import ModifyStuPage from './components/views/ModifyStuPage/ModifyStuPage';
+import ModifyStuPage from './components/views/ModifyStuPage/ModifyPage';
+import ShowStuPortfolios from './components/views/ShowStuPortfolios/ShowStuPortfolios';
+import ShowDetailPortfolio from './components/views/ShowDetailPortfolio/ShowDetailPortfolio';
+import UploadPortfolio from './components/views/UploadPortfolio/UploadPortfolio';
 
 import Auth from './hoc/auth';
 
@@ -29,6 +32,9 @@ function App() {
           <Route exact path="/registerStu" component={Auth(RegisterStuPage, null)} />
           <Route exact path="/introduce" component={Auth(IntroducePage, null)} />  
           <Route exact path="/modifyStuPage" component={Auth(ModifyStuPage, null)} />
+          <Route exact path="/showPorts" component={Auth(ShowStuPortfolios, null)} />
+          <Route exact path="/showPortDetail" component={Auth(ShowDetailPortfolio, null)} />
+          <Route exact path="/uploadPortfolio" component={Auth(UploadPortfolio, null)} />
         </Switch>
       </div>
       <Footer />

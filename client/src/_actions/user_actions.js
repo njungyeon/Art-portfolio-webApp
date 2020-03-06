@@ -17,6 +17,15 @@ export function loginUser(dataToSubmit){
     }
 }
 
+export function logoutUser(){
+    const request = axios.post(`${USER_SERVER}/logout`)
+        .then(response => response.data);
+    return {
+        type: LOGOUT_USER,
+        payload: request
+    }
+}
+
 export function auth(){
     const request = axios.get(`${USER_SERVER}/auth`)
     .then(response => response.data);
@@ -28,7 +37,7 @@ export function auth(){
 }
 
 export function registerUser(dataToSubmit){
-    const request = axios.post(`${REGISTER_USER}/register`, dataToSubmit)
+    const request = axios.post(`${USER_SERVER}/register`, dataToSubmit)
       .then(response => response.data);
     return {
         type: REGISTER_USER,
@@ -37,7 +46,7 @@ export function registerUser(dataToSubmit){
 }
 
 export function modifyUser(dataToSubmit){
-    const request = axios.post()
+    const request = axios.post(`${USER_SERVER}/modify`, dataToSubmit)
         .then(response => response.data);
     return {
         type: MODIFY_USER,

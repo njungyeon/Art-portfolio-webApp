@@ -46,10 +46,27 @@ input.error {
   flex-wrap: wrap;
 }
 
+.portfolio-card-personal {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .userImage {
   opacity: 1;
 }
 
 .userImage:hover {
   opacity: 0.8;
+}
+
+.art-container {
+  flex-direction: column;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.artPictures {
+  width: 200px
 }

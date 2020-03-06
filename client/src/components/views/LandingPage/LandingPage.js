@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Pagination, Card, Typography, Tag, Input } from 'antd';
-import { UserOutlined, EditOutlined, EllipsisOutlined, SettingOutlined  } from '@ant-design/icons';
-
+import { Pagination, Card, Typography, Input } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import TagCompo from './TagCompo';
 const { Title } = Typography;
-// const { Meta } = Card;
 
 function LandingPage(props) {
     const user = useSelector(state => state.user)
@@ -13,15 +12,13 @@ function LandingPage(props) {
     const handleCard = (index) => {
         console.log("학생정보수정", index)
         //dispatch()
-        
-
+        props.history.push('/showPorts')
     }
 
     const handleCardAction = (num) => {
-        console.log("실행?", num)
         // dispatch()
         if(num === 1){
-            // props.history.push('/AddNewPortfolio');
+            props.history.push('/uploadPortfolio');
         }else{
             props.history.push('/modifyStuPage');
         }
@@ -37,16 +34,12 @@ function LandingPage(props) {
         { name: '김민석', teacher: 'lisa', image: '', classLevel: 'beginner' },
         { name: '유재석', teacher: 'jenny', image: '', classLevel: 'beginner' },
         { name: '강호동', teacher: 'rose', image: '', classLevel: 'beginner' },
-        { name: '김민석', teacher: 'lisa', image: '', classLevel: 'beginner' },
-        { name: '유재석', teacher: 'jenny', image: '', classLevel: 'beginner' },
-        { name: '강호동', teacher: 'rose', image: '', classLevel: 'beginner' },
-        { name: '김민석', teacher: 'lisa', image: '', classLevel: 'beginner' },
     ]
     const Cards = stuArray.map((element, index) => {
         return (
             <Card
                 key={index}
-                style={{ width: 250, marginBottom: 10, textAlign: 'center'}}// height:300, margin: 10
+                style={{ width: 250, marginBottom: 10, textAlign: 'center'}}
                 title={`${element.name}`}
                 headStyle = {{fontWeight: "bold"}}
                 bodyStyle = {{fontWeight: "bold", padding: 10}}
@@ -58,14 +51,11 @@ function LandingPage(props) {
                     className="userImage"/>
                 }
                 actions={[
-                    // <EditOutlined key="edit" onClick={handleCardAction}/>,
-                    // <SettingOutlined key="setting" onClick={handleCardAction}/>,
                     <i key="addPicture" class="material-icons" onClick={() => {handleCardAction(1)}}>add_photo_alternate</i>,
                     <i key="modify" class="material-icons" onClick={() => {handleCardAction(2)}}>edit</i>
                 ]}
                 
             >
-                {/* <Meta title="Europe Street beat" description="www.instagram.com" /> */}
                 <p>담당 선생님: {`${element.teacher}`} </p>
                 <p>소속 반: {`${element.classLevel}`} </p>
             </Card>
@@ -73,16 +63,14 @@ function LandingPage(props) {
     })
     const tag = (
         <div>
-            <Tag>Tag 1</Tag>
-            <Tag>
-            <a href="https://github.com/ant-design/ant-design/issues/1862">Link</a>
-            </Tag>
-            <Tag closable >
-            Tag 2
-            </Tag>
-            <Tag closable>
-            Prevent Default
-            </Tag>
+            <TagCompo name="우리반" initChecked={true}/>
+            <TagCompo name="전체" initChecked={false} />
+            <TagCompo name="레벨1"initChecked={false}/>
+            <TagCompo name="레벨2"/>
+            <TagCompo name="레벨3"/>
+            <TagCompo name="레벨4"/>
+            <TagCompo name="레벨5"/>
+            <TagCompo name="레벨6"/>
         </div>
     );
 

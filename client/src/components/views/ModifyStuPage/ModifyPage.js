@@ -26,7 +26,7 @@ function beforeUpload(file) {
     return isJpgOrPng && isLt2M;
 }
 
-function RegisterStuPage(props) {
+function ModifyStuPage(props) {
     const dispatch = useDispatch();
 
     const [formErrorMsg, setformErrorMsg] = useState('')
@@ -35,13 +35,14 @@ function RegisterStuPage(props) {
 
     const handleOnChange = info => {
         if (info.file.status === 'uploading') {
-            setloading(true);
-            return;
+        setloading(true);
+          return;
         }
         if (info.file.status === 'done') {
             getBase64(info.file.originFileObj, imageUrl => {
+
                 setimageUrl(imageUrl);
-                setloading(false)
+                setloading(false);
             });
         }
       };
@@ -113,7 +114,7 @@ function RegisterStuPage(props) {
                     /* and other goodies */
                 }) => (
                     <div className="app">
-                    <Title level={2}>학생 등록</Title>
+                    <Title level={2}>학생 정보 수정</Title>
                     <form onSubmit={handleSubmit} style={{ width: '350px' }}>
                         <Form.Item required>
                             <Input
@@ -213,7 +214,7 @@ function RegisterStuPage(props) {
 
                         <Form.Item>
                             <Button type="primary" htmlType="submit" className="login-form-button" style={{ minWidth: '100%' }} disabled={isSubmitting} onSubmit={handleSubmit}>
-                                학생 등록
+                                수정
                             </Button>
                         </Form.Item>
                     </form>
@@ -224,4 +225,4 @@ function RegisterStuPage(props) {
     )
 }
 
-export default RegisterStuPage
+export default ModifyStuPage
