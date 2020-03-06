@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema({
         required: true
     },
     classLevel: {
-        type: String
+        type: Number
     },
     registerDate: {
         type: Date,
@@ -31,7 +31,8 @@ const userSchema = mongoose.Schema({
     },
     role: {
         type: Number,
-        default: 2 //0: 관리자 , 1: 원장 및 선생님들, 2: 학생과 학부모님
+        default: 2, //0: 관리자 , 1: 원장 및 선생님들, 2: 학생과 학부모님
+        required: true
     },
     token: {
         type: String 
@@ -65,7 +66,6 @@ userSchema.pre('save', function(next){
     }    
 })
 
-//이 함수 공부하자
 userSchema.methods.comparePassword = function(plainPassword, cb){
     var user = this;
     bcrypt.compare(plainPassword, user.password, function(err, isMatch){
