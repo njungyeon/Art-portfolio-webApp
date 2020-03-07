@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Pagination, Card, Typography, Input } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { getStuentList } from '../../../_actions/user_actions';
 import TagCompo from './TagCompo';
 const { Title } = Typography;
 
 function LandingPage(props) {
     const user = useSelector(state => state.user)
+    // const studentData = useSelector(state => state.studentData)
+    // console.log("students data: ", studentData);
     const dispatch = useDispatch();
 
     const handleCard = (index) => {
@@ -14,6 +17,18 @@ function LandingPage(props) {
         //dispatch()
         props.history.push('/showPorts')
     }
+
+    useEffect(() => {
+        dispatch(getStuentList()).then(async response => {
+            console.log("들어왓냐")
+            if(await !response.payload.success){
+                props.history.push('/register_login')
+            }else if(response.payload.success){
+                console.log("데이터 가져오기 성공")
+                console.log(response.payload.user)
+            }
+        })
+    }, [])
 
     const handleCardAction = (num) => {
         // dispatch()
@@ -35,6 +50,8 @@ function LandingPage(props) {
         { name: '유재석', teacher: 'jenny', image: '', classLevel: 'beginner' },
         { name: '강호동', teacher: 'rose', image: '', classLevel: 'beginner' },
     ]
+
+    // if(studentData) stuArray = studentData.user;
     const Cards = stuArray.map((element, index) => {
         return (
             <Card
@@ -87,7 +104,38 @@ function LandingPage(props) {
                 로그인 해주세요~!
             </div>
         )
-    }else{
+    }else if(user.studentData && user.studentData.success){
+        const Cards = user.studentData.user.map((element, index) => {
+            return (
+                <Card
+                    key={index}
+                    style={{ width: 250, marginBottom: 10, textAlign: 'center'}}
+                    title={`${element.name}`}
+                    headStyle = {{fontWeight: "bold"}}
+                    bodyStyle = {{fontWeight: "bold", padding: 10}}
+                    hoverable
+                    cover={<img 
+                        onClick={() => {handleCard(index)}} 
+                        alt="example" 
+                        src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+                        className="userImage"/>
+                    }
+                    actions={[
+                        <i key="addPicture" class="material-icons" onClick={() => {handleCardAction(1)}}>add_photo_alternate</i>,
+                        <i key="modify" class="material-icons" onClick={() => {handleCardAction(2)}}>edit</i>
+                    ]}
+                    
+                >
+                    {/* <p>담당 선생님: {`${element.teacher}`} </p> */}
+                    <p>소속 반: 레벨{`${element.classLevel}`} </p>
+                </Card>
+            )
+        })
+        return(
+            <div className="portfolio-card">{Cards}</div>
+        )
+    }
+    else{
 
         return (
             <div className="portfolio-div">

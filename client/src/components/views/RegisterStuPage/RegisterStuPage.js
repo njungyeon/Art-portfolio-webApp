@@ -33,7 +33,8 @@ function RegisterStuPage(props) {
     const [loading, setloading] = useState(false)
     const [imageUrl, setimageUrl] = useState('')
 
-    const handleOnChange = info => {
+    const handleOnChange = (info, cb) => {
+        console.log("info.file",info.file)
         if (info.file.status === 'uploading') {
             setloading(true);
             return;
@@ -41,7 +42,13 @@ function RegisterStuPage(props) {
         if (info.file.status === 'done') {
             getBase64(info.file.originFileObj, imageUrl => {
                 setimageUrl(imageUrl);
+                console.log(imageUrl);
                 setloading(false)
+                cb("fileInfo", {
+                    name: info.file.name,
+                    size: info.file.size,
+                    type: info.file.type
+                });
             });
         }
       };
@@ -56,7 +63,7 @@ function RegisterStuPage(props) {
     return (
         <div>
             <Formik
-                initialValues={{ userId: '', password: '', fileInfo: null }}
+                initialValues={{ userId: '', password: '', fileInfo: null, }}
                 validationSchema={Yup.object().shape({
                     studentId: Yup.string()
                       .min(5, '최소한 5자 이상 입력해주세요')
@@ -69,18 +76,20 @@ function RegisterStuPage(props) {
                     classLevel: Yup.string()
                       .required('학생의 수업 레벨을 입력해주세요'),
                     fileInfo: Yup.mixed()
-                      .required(),
+                      .required('학생의 프로필사진을 추가해주세요'),
                   })}
                 onSubmit={(values, { setSubmitting }) => {
+                    console.log("왜 갑자기 안됨?")
                     setTimeout(() => {
-                    // alert(JSON.stringify(values, null, 2));
+                    alert(JSON.stringify(values, null, 2));
                     let dataToSubmit = {
                         userId: values.studentId,
                         password: values.password,
                         name: values.name,
                         classLevel: values.classLevel,
-                        image: values.image,
+                        imageInfo: values.fileInfo,
                     };
+                    console.log(dataToSubmit)
                     dispatch(registerUser(dataToSubmit))
                         .then(response => {
                             if(response.payload.loginSuccess){
@@ -93,7 +102,7 @@ function RegisterStuPage(props) {
                             }
                         })
                         .catch(err => {
-                            setformErrorMsg('회원가입 오류.. [관리자에게 문의하세요]')
+                            setformErrorMsg('학생등록 오류.. [관리자에게 문의하세요]')
                             setTimeout(() => {
                                 setformErrorMsg("")
                             }, 3000);
@@ -110,6 +119,9 @@ function RegisterStuPage(props) {
                     handleBlur,
                     handleSubmit,
                     isSubmitting,
+                    setFieldValue,
+                    setFieldTouched,
+                    onSearch
                     /* and other goodies */
                 }) => (
                     <div className="app">
@@ -118,7 +130,7 @@ function RegisterStuPage(props) {
                         <Form.Item required>
                             <Input
                                 id="studentId"
-                                prefix={<i class="material-icons" style={{ color: 'rgba(0,0,0,.25)' }}> face </i>}
+                                prefix={<i className="material-icons" style={{ color: 'rgba(0,0,0,.25)' }}> face </i>}
                                 placeholder="아이디"
                                 type="studentId"
                                 value={values.studentId}
@@ -134,7 +146,7 @@ function RegisterStuPage(props) {
                         <Form.Item>
                             <Input
                                 id="password"
-                                prefix={<i class="material-icons" style={{ color: 'rgba(0,0,0,.25)' }}> lock </i>}
+                                prefix={<i className="material-icons" style={{ color: 'rgba(0,0,0,.25)' }}> lock </i>}
                                 placeholder="비밀번호"
                                 type="password"
                                 value={values.password}
@@ -168,11 +180,12 @@ function RegisterStuPage(props) {
                                 showSearch
                                 placeholder="수업 레벨"
                                 optionFilterProp="children"
-                                onChange={handleChange}
+                                onChange={(EventTarget) => {
+                                    console.log(EventTarget);
+                                    setFieldValue("classLevel", EventTarget);
+                                }}
                                 onBlur={handleBlur}
-                                // onSearch={onSearch}
                                 id="classLevel"
-                                type="classLevel"
                                 value={values.classLevel}
                                 classname={ errors.classLevel && touched.classLevel ? 'text-input error' : 'text-input' }
                                 filterOption={(input, option) =>
@@ -182,30 +195,36 @@ function RegisterStuPage(props) {
                                 <Option value="1">레벨1</Option>
                                 <Option value="2">레벨2</Option>
                                 <Option value="3">레벨3</Option>
+                                <Option value="4">레벨4</Option>
+                                <Option value="5">레벨5</Option>
+                                <Option value="6">레벨6</Option>
                             </Select>
                             {errors.classLevel && touched.classLevel && (
                                 <div className="input-feedback">{errors.classLevel}</div>
                             )}
                         </Form.Item>
 
-                        <Form.Item>
+                        <div>
                             <Upload
-                                name="fileInfo"
                                 listType="picture-card"
                                 className="avatar-uploader"
                                 showUploadList={false}
                                 action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                beforeUpload={beforeUpload}
-                                onChange={handleOnChange}
-                                value={values.fileInfo}
-                                type="fileInfo"
+                                beforeUpload={beforeUpload}                               
+                                onBlur={setFieldTouched}
+                                classname={ errors.classLevel && touched.classLevel ? 'text-input error' : 'text-input' }
+                                onChange={(info) => {
+                                    handleOnChange(info, setFieldValue);
+                                    //와 드디어해결 정연아 너 대박~ 멋잇어ㅎㅎ
+                                    // third party https://codesandbox.io/s/jRzE53pqR 공부해랏
+                                }}
                             >
                                 {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
                             </Upload>
                             {errors.fileInfo && touched.fileInfo && (
                                 <div classname="input-feedback">{errors.fileInfo}</div>
                             )}
-                        </Form.Item>
+                        </div>
                         
                         {formErrorMsg && (
                             <label><p>{formErrorMsg}</p></label>

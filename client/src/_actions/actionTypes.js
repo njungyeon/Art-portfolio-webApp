@@ -4,7 +4,7 @@ export const LOGOUT_USER = 'logout_user';
 export const AUTH_USER = 'auth_user';
 export const REGISTER_USER = 'register_user';
 export const MODIFY_USER = 'modify_user';
-export const SHOW_ALL_STUDENTS = 'show_all_students'
+export const GET_USERLIST = 'get_student_list'
 
 /////////////////portfolio/////////////////
 export const UPLOAD_PORTFOLIO = "upload_portfolio"

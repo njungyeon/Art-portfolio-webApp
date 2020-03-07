@@ -4,6 +4,7 @@ import {
     AUTH_USER,
     MODIFY_USER,
     REGISTER_USER,
+    GET_USERLIST,
 } from './actionTypes';
 import axios from 'axios'
 import { USER_SERVER } from '../components/Config';
@@ -37,6 +38,7 @@ export function auth(){
 }
 
 export function registerUser(dataToSubmit){
+    console.log(dataToSubmit)
     const request = axios.post(`${USER_SERVER}/register`, dataToSubmit)
       .then(response => response.data);
     return {
@@ -50,6 +52,15 @@ export function modifyUser(dataToSubmit){
         .then(response => response.data);
     return {
         type: MODIFY_USER,
+        payload: request
+    }
+}
+
+export function getStuentList(){
+    const request = axios.get(`${USER_SERVER}/`)
+        .then(response => response.data);
+    return {
+        type: GET_USERLIST,
         payload: request
     }
 }
