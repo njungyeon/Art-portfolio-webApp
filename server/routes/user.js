@@ -56,12 +56,18 @@ router.get('/logout', auth, (req, res) => {
 })
 
 router.post('/modify', (req, res) => {
-    User.findOneAndUpdate({ _id: req.body._id }, req.body, (err, user) => {
+    User.findAl((err, user) => {
         if(err) res.json({ success: false, err })
         return res.status(200).send({ success: true })
     })
 })
 
+router.get('/', (req, res) => {
+    User.find({ role: 2 }, (err, user) => {
+        if(err) res.json({ success: false, err })
+        return res.status(200).send({ success: true, user })
+    })
+})
 
 
 module.exports = router;
